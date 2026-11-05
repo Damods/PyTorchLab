@@ -1,0 +1,42 @@
+# Local environments and editor state.
+/.venv/
+/.idea/
+/.workbuddy/
+/.git/
+__pycache__/
+*.py[cod]
+
+# Training data and generated output stay local.
+/data/
+/.tmp/
+/runs/
+/runs_p2/
+/runs_p4/
+/weights/
+/artifacts/
+/tools/prepare_release.py
+/tools/restore_release.py
+*.pt
+*.pt.*
+*.pth
+*.pth.*
+*.onnx
+*.tflite
+*.zip
+*.tar
+*.tar.*
+*.gz
+*.log
+*.cache
+*.ttf
+events.out.tfevents.*
+
+# Local publishing tools and caches.
+/.github-upload/
+/.artifacts-cache/
+/nul
+.env
+.env.*
+!.env.example
+*.pem
+*.key

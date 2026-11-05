@@ -1,0 +1,12 @@
+# Install matching torch + torchvision first (tools/setup_env.py handles this).
+# Versions below were used by this project with Python 3.14.
+ultralytics==8.4.184
+numpy==2.5.4
+opencv-python==5.0.0.93
+matplotlib==3.11.2
+pillow==12.3.0
+pillow-heif==1.8.1
+PyYAML==6.0.3
+tensorboard==2.21.0
+scikit-learn==1.9.1
+tqdm==4.70.1
