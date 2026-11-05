@@ -39,6 +39,11 @@ def main() -> None:
     ap.add_argument("--name", default=None, help="run 名，默认沿用 checkpoint 里的")
     ap.add_argument("--out", type=Path, default=None,
                     help="输出文件名；默认就地覆盖（会先备份成 xxx.orig）")
+    ap.add_argument("--batch", type=int, default=None,
+                    help="续训时改 batch（ultralytics 明确允许，A10 24G 可以给 8）")
+    ap.add_argument("--workers", type=int, default=None, help="续训时改 DataLoader 进程数")
+    ap.add_argument("--imgsz", type=int, default=None,
+                    help="续训时改分辨率（不推荐：会改变训练分布，慎用）")
     ap.add_argument("--dry-run", action="store_true", help="只打印将要改动的内容")
     args = ap.parse_args()
 
@@ -70,10 +75,20 @@ def main() -> None:
         "project": str(project_path),
         "model": str(ckpt_path),
         "resume": str(ckpt_path),
-        "exist_ok": True,   # 关键：否则续训会新建 strawdi_10242，results.csv 断掉
+        # save_dir 也在 train_args 里，且是绝对路径。不改的话云端会建出一个
+        # 名字叫 "D:\project\..." 的目录（Linux 上反斜杠是合法文件名字符）。
+        "save_dir": str(project_path / str(args.name or ta.get("name"))),
+        "exist_ok": True,   # 关键：否则续训可能新建 strawdi_10242，results.csv 断掉
     }
     if args.name:
         updates["name"] = args.name
+    # 这三项 ultralytics 在 resume 时是允许改的（见 engine/trainer.py 的 allowed 集合）
+    if args.batch:
+        updates["batch"] = args.batch
+    if args.workers:
+        updates["workers"] = args.workers
+    if args.imgsz:
+        updates["imgsz"] = args.imgsz
 
     print("\n将修改的字段：")
     for k, v in updates.items():
