@@ -225,7 +225,8 @@ def main() -> None:
     # TensorBoard 记录器。log_dir 下每个 run 一个子目录，多个实验可以叠在一张图上对比
     writer = SummaryWriter(log_dir=str(out_dir / "tb"))
     best_path = out_dir / "best.pt"
-    best_acc = 0.0
+    # Save the first valid checkpoint even when validation accuracy is zero.
+    best_acc = -1.0
     history = []      # 逐 epoch 的记录，最后写进 train_report.json，方便脚本化对比
 
     print(f"\n{'epoch':>6} {'lr':>7} {'train_loss':>11} {'train_acc':>10} "

@@ -190,7 +190,8 @@ def main() -> None:
     criterion = nn.CrossEntropyLoss(label_smoothing=args.label_smoothing)
     writer = SummaryWriter(log_dir=str(out_dir / "tb"))
     best_path = out_dir / "best.pt"
-    best_acc, best_epoch = 0.0, 0
+    # A first validation accuracy of 0 is still a valid model to save.
+    best_acc, best_epoch = -1.0, 0
     history = []
 
     print(f"\n{'epoch':>6} {'阶段':>6} {'lr(head)':>9} {'train_loss':>11} {'train_acc':>10} "
